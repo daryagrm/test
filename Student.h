@@ -1,31 +1,36 @@
-#ifndef STUDENT_H_
-#define STUDENT_H_
+#ifndef _STUDENT_H_
+#define _STUDENT_H_
 
-#include <string>
+#include <iostream>
+#include "string.h"
+#include "exceptions.h"
 
 class Student {
-private:
-	static const int MAX = 5;   // шкала баллов
-	static int quantity;        // общее количество учеников
-	std::string name;           // имя
-	std::string surname;        // фамилия
-	int group_number;           // номер группы
-	int score[MAX];             // личные оценки за семестр
-								// находим средний балл студента по 5-ти бальной системе
-	float GPA(int sc[], int size) {
-		int i = 0;
-		float gpa = 0;
-		while (i < size) {
-			gpa += sc[i];
-			i++;
-		}
-		return gpa / size;
-	}
 public:
 	Student();
-	Student(std::string n, std::string sn, int g, int sc[]);
-	void Init(void);
-	void PrintStudent(void);
+	Student(
+		const char* nm,
+		int n,
+		int *g
+	);
+	Student(const Student &st);
+	~Student();
+	void set_name(const char* nm);
+	void set_groupNum(int n);
+	void set_grades(const int *g);
+
+	const char* get_name();
+	int get_groupNum() const;
+	const int* get_grades();
+
+	Student& operator=(const Student &st);
+	friend std::ostream& operator<<(std::ostream& os, const Student &st);
+	friend std::istream& operator>>(std::istream& is, Student &st);
+private:
+	char *name;
+	int group_num;
+	int grades[5];
+	void init();
 };
 
 #endif
